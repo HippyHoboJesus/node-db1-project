@@ -7,10 +7,10 @@ const getAll = () => {
 
 const getById = id => {
   // DO YOUR MAGIC
-  return db('account').where('id', id).first()
+  return db('accounts').where('id', id).first()
 }
 
-const create = async account => {
+const create = async (account) => {
   // DO YOUR MAGIC
   const [id] = await db('accounts').insert(account)
   return getById(id)

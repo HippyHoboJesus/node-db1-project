@@ -21,7 +21,10 @@ router.get('/:id', md.checkAccountId, async (req, res, next) => {
 router.post('/', md.checkAccountPayload, md.checkAccountNameUnique, async (req, res, next) => {
   // DO YOUR MAGIC
   try {
-    const newAccount = await Account.create(req.body)
+    const newAccount = await Account.create({
+      name:req.body.name.trim(),
+      budget:req.body.budget
+    })
     res.status(201).json(newAccount)
   } catch (err) {
     next(err)
@@ -31,7 +34,10 @@ router.post('/', md.checkAccountPayload, md.checkAccountNameUnique, async (req, 
 router.put('/:id', md.checkAccountId, md.checkAccountPayload, md.checkAccountNameUnique, async (req, res, next) => {
   // DO YOUR MAGIC
   try {
-    const updated = await Account.updateById(req.params.id, req.body)
+    const updated = await Account.updateById(req.params.id, {
+      name:req.body.name.trim(),
+      budget:req.body.budget
+    })
     res.json(updated)
   } catch (err) {
     next(err)
@@ -50,7 +56,7 @@ router.delete('/:id', md.checkAccountId, async (req, res, next) => {
 
 router.use((err, req, res, next) => { // eslint-disable-line
   // DO YOUR MAGIC
-  res.status(err.status || 500).json({
+  res.status(err.status || 400).json({
     message: err.message
   })
 })
